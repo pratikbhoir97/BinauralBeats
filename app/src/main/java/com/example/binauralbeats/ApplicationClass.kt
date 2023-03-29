@@ -19,9 +19,14 @@ class ApplicationClass:Application() {
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val notificationChannel=NotificationChannel()
+//            val notificationChannel=NotificationChannel()
 
         }
+
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
 
     }
 }

@@ -9,6 +9,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -74,27 +75,30 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
 
 
         button.setOnClickListener {
-
-
             if (musicService!!.mediaPlayer == null) {
-             //  musicService!!. mediaPlayer = MediaPlayer.create(this, audioCurrent)
+                Log.d("MusicActivity", "1st")
+               musicService!!. mediaPlayer = MediaPlayer.create(this, audioCurrent)
               musicService!!.  mediaPlayer?.start()
+                button.setImageResource(R.drawable.pause)
+                musicService!!.startFGServiceNotification()
             } else if (musicService!!.mediaPlayer!!.isPlaying) {
-                button.setBackgroundResource(R.drawable.play)
+                Log.d("MusicActivity", "2nd")
+//                button.setBackgroundResource(R.drawable.play)
+                button.setImageResource(R.drawable.play)
               musicService!!.  mediaPlayer?.pause()
-            } else if (musicService!!.mediaPlayer?.isPlaying == true) {
-                button.setBackgroundResource(R.drawable.pause)
+            } else if (musicService!!.mediaPlayer?.isPlaying == false) {
+                Log.d("MusicActivity", "3rd")
+//                button.setBackgroundResource(R.drawable.pause)
+                button.setImageResource(R.drawable.pause)
                musicService!!. mediaPlayer?.start()
             }
-
-
         }
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder = service as MusicService.MyBinder
         musicService = binder.currentService()
-        musicService!!.mediaPlayer=MediaPlayer.create(this, audioCurrent)
+//        musicService!!.mediaPlayer=MediaPlayer.create(this, audioCurrent)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
