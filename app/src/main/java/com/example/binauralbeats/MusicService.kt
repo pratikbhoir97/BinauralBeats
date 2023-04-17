@@ -1,27 +1,26 @@
 package com.example.binauralbeats
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
-import android.os.Parcelable
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import com.example.binauralbeats.ApplicationClass.Companion.CHANNEL_ID
 import com.example.binauralbeats.utils.CommonData
-import kotlin.properties.Delegates
 
 class MusicService:Service() {
     lateinit var player: MediaPlayer
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
+    private lateinit var mediaSession: MediaSessionCompat
 
     override fun onBind(intent: Intent?): IBinder? {
+        mediaSession= MediaSessionCompat(baseContext,"My Music")
         return myBinder
     }
 
@@ -34,7 +33,7 @@ class MusicService:Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        createNotificationChannel()
+    //    createNotificationChannel()
 //        player = MediaPlayer.create(this, R.raw.space)
 //        player.setLooping(true)
 //        player.start()
@@ -58,22 +57,35 @@ class MusicService:Service() {
         startForeground(1, notification)
     }
 
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.app_name)
-//            val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-//                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+  @SuppressLint("SuspiciousIndentation")
+  fun showNotification(pauseBtn:Int){
+      val playIntent=Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PLAY)
+      val playPendingIntent=PendingIntent.getBroadcast(baseContext,0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+     val exitIntent=Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.EXIT)
+      val exitPendingIntent=PendingIntent.getBroadcast(baseContext,0,exitIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+      val notification=NotificationCompat.Builder(baseContext,ApplicationClass.CHANNEL_ID)
+          .setContentTitle(CommonData.beatCurrent)
+        //  .setContentText(CommonData.beatCurrent)
+          .setSmallIcon(R.drawable.baseline_music_note_24)
+          .setLargeIcon(BitmapFactory.decodeResource(resources,MusicActivity.currentImage))
+          .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSession.sessionToken))
+          .setPriority(NotificationCompat.PRIORITY_LOW)
+          .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+          .setOnlyAlertOnce(true)
+          .setAutoCancel(true)
+          .setOngoing(true)
+          .addAction(pauseBtn,"play",playPendingIntent)
+         .addAction(R.drawable.baseline_exit_to_app_24,"exit",exitPendingIntent)
+          .build()
+
+        startForeground(13,notification)
+  }
+
     }
-}
+
+
+
+
 
 
