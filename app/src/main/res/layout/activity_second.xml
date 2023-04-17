@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#343A40"
     android:orientation="vertical"
     tools:context=".MusicActivity">
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -89,7 +89,7 @@
             android:id="@+id/profile_image"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="100dp"
             android:padding="16dp"
             android:src="@drawable/study"
             app:civ_border_color="@color/white"
@@ -100,12 +100,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
+                android:id="@+id/volumeSeekbar"
+                android:layout_width="185dp"
+                android:layout_height="31dp"
                 android:layout_marginLeft="120dp"
                 android:progressTint="@color/white"
                 android:thumbTint="@color/white" />
@@ -113,9 +113,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="wav"
+                android:layout_marginLeft="165dp"
+                android:layout_marginTop="8dp"
+                android:text="volume"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="24dp"
                 android:textStyle="italic" />
         </LinearLayout>
 
@@ -130,22 +132,46 @@
             android:src="@drawable/play"
             android:textSize="20sp" />
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:layout_width="150dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            app:cardCornerRadius="25dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:background="@drawable/shape"-->
-<!--            >-->
-<!--            <ImageButton-->
-<!--                android:id="@+id/button"-->
-<!--                android:layout_width="150dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginTop="130dp"-->
-<!--                android:padding="10dp"-->
-<!--                android:src="@drawable/play"-->
-<!--                android:textSize="20sp" />-->
-<!--        </androidx.cardview.widget.CardView>-->
+        <!--        <androidx.cardview.widget.CardView-->
+        <!--            android:layout_width="150dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            app:cardCornerRadius="25dp"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:background="@drawable/shape"-->
+        <!--            >-->
+        <!--            <ImageButton-->
+        <!--                android:id="@+id/button"-->
+        <!--                android:layout_width="150dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_marginTop="130dp"-->
+        <!--                android:padding="10dp"-->
+        <!--                android:src="@drawable/play"-->
+        <!--                android:textSize="20sp" />-->
+        <!--        </androidx.cardview.widget.CardView>-->
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/native_banner_ad_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/banner_ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/native_ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#03A9F4"
+            android:orientation="vertical"
+
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

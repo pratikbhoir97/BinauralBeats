@@ -34,5 +34,7 @@ class CommonData {
             "Study", "Focus", "Creativity", "Memory", "Love", "Relax", "Sleep", "Reduce Anxiety",
             "UnderWater", "Atmospheric"
         )
+
+        var beatCurrent:String = ""
     }
 }

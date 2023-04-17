@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,11 +8,36 @@
     android:orientation="vertical"
     android:background="#7A007A">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/card_view"
+        android:layout_above="@id/native_banner_ad_container"/>
+    <LinearLayout
+        android:id="@+id/native_banner_ad_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <FrameLayout
+            android:id="@+id/banner_ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+
+        <RelativeLayout
+            android:id="@+id/native_ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:background="#03A9F4"
+
+            />
+    </LinearLayout>
 
 
-        tools:listitem="@layout/card_view" />
-</LinearLayout>
+</RelativeLayout>

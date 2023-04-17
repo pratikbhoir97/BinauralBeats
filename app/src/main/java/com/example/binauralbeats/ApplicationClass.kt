@@ -2,6 +2,8 @@ package com.example.binauralbeats
 
 import android.app.Application
 import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 
 class ApplicationClass:Application() {
@@ -9,9 +11,7 @@ class ApplicationClass:Application() {
     companion object {
         const val CHANNEL_ID = "binaural_beats"
         const val PLAY="play"
-        const val PAUSE="pause"
         const val EXIT="exit"
-
 
 
     }
@@ -19,7 +19,15 @@ class ApplicationClass:Application() {
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            val notificationChannel=NotificationChannel()
+            val name = getString(R.string.app_name)
+
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
+
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
 
         }
 
