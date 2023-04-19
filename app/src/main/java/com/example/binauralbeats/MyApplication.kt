@@ -22,7 +22,7 @@ class MyApplication : Application() {
 companion object{
 
     var bannerAdId :String= "ca-app-pub-3940256099942544/6300978111"
-    var nativeAdId :String= "ca-app-pub-3940256099942544/2247696110"
+    var nativeAdId :String= "ca-app-pub-3940256099942544/224769110"
     var interstitailAdId : String="ca-app-pub-3940256099942544/1033173712"
     var exitInterstitailAdId :String= "ca-app-pub-3940256099942544/1033173712"
 
@@ -31,7 +31,7 @@ companion object{
 
         if(BuildConfig.DEBUG){
             bannerAdId =  "ca-app-pub-3940256099942544/6300978111"
-            nativeAdId =  "ca-app-pub-3940256099942544/2247696110"
+            nativeAdId =  "ca-app-pub-3940256099942544/224796110"
             interstitailAdId =  "ca-app-pub-3940256099942544/1033173712"
             exitInterstitailAdId =  "ca-app-pub-3940256099942544/1033173712"
         }else{

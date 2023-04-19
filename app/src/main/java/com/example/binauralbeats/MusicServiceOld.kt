@@ -7,13 +7,14 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import com.example.binauralbeats.ApplicationClass.Companion.CHANNEL_ID
 import com.example.binauralbeats.utils.CommonData
 
-class MusicService:Service() {
+class MusicServiceOld:Service() {
     lateinit var player: MediaPlayer
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
@@ -25,12 +26,10 @@ class MusicService:Service() {
     }
 
     inner class MyBinder : Binder() {
-        fun currentService(): MusicService {
-            return this@MusicService
+        fun currentService(): MusicServiceOld {
+            return this@MusicServiceOld
         }
     }
-
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
     //    createNotificationChannel()
@@ -60,15 +59,29 @@ class MusicService:Service() {
   @SuppressLint("SuspiciousIndentation")
   fun showNotification(pauseBtn:Int){
       val playIntent=Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PLAY)
-      val playPendingIntent=PendingIntent.getBroadcast(baseContext,0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+//      val playPendingIntent=PendingIntent.getBroadcast(baseContext,0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+      var playPendingIntent: PendingIntent? = null
+      playPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          PendingIntent.getBroadcast(this, 0, playIntent, PendingIntent.FLAG_MUTABLE)
+      } else {
+          PendingIntent.getBroadcast(this, 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+      }
 
      val exitIntent=Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.EXIT)
-      val exitPendingIntent=PendingIntent.getBroadcast(baseContext,0,exitIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+//      val exitPendingIntent=PendingIntent.getBroadcast(baseContext,0,exitIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+      var exitPendingIntent: PendingIntent? = null
+      exitPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          PendingIntent.getBroadcast(this, 0, exitIntent, PendingIntent.FLAG_MUTABLE)
+      } else {
+          PendingIntent.getBroadcast(this, 0, exitIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+      }
+
+
       val notification=NotificationCompat.Builder(baseContext,ApplicationClass.CHANNEL_ID)
           .setContentTitle(CommonData.beatCurrent)
         //  .setContentText(CommonData.beatCurrent)
           .setSmallIcon(R.drawable.baseline_music_note_24)
-          .setLargeIcon(BitmapFactory.decodeResource(resources,MusicActivity.currentImage))
+          .setLargeIcon(BitmapFactory.decodeResource(resources,CommonData.currentImage))
           .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSession.sessionToken))
           .setPriority(NotificationCompat.PRIORITY_LOW)
           .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -81,7 +94,6 @@ class MusicService:Service() {
 
         startForeground(13,notification)
   }
-
     }
 
 

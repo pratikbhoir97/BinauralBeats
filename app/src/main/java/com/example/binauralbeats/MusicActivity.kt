@@ -17,76 +17,76 @@ import com.example.binauralbeats.AdMobAds.NativeAndBannerAds
 import com.example.binauralbeats.databinding.ActivitySecondBinding
 import com.example.binauralbeats.utils.CommonData
 import com.google.android.gms.ads.MobileAds
+import java.time.Duration
 import kotlin.properties.Delegates
 
 
 class MusicActivity : AppCompatActivity(), ServiceConnection {
-    companion object {
-        var isPlaying: Boolean = false
 
-        lateinit var beatList: ArrayList<String>
-        lateinit var beatImage: ArrayList<Int>
-        lateinit var binding: ActivitySecondBinding
-
-
-        lateinit var audioList: ArrayList<Int>
-        var position by Delegates.notNull<Int>()
-        lateinit var currentBeatName: String
-        var currentImage by Delegates.notNull<Int>()
-        var currentAudio by Delegates.notNull<Int>()
-
-        var musicService: MusicService? = null
-    }
- lateinit var seekBar: SeekBar
+ lateinit var VolumControllerSeekBar: SeekBar
     lateinit var song: TextView
     lateinit var imageView: ImageView
     lateinit var button: ImageButton
+
+    //Ads variables
     private lateinit var nativeAdContainer: RelativeLayout
     private lateinit var bannerAdFrameLayout: FrameLayout
     val nativeandBanner = NativeAndBannerAds()
     var interStitialAds = InterStitialAds()
     lateinit var activity: Activity
 
-    override fun onBackPressed() {
+    var isServiceCreated : Boolean= false
+
+
+    override fun onDestroy() {
+        if (CommonData.musicServiceOld!!.mediaPlayer != null){
+            if (CommonData.musicServiceOld!!.mediaPlayer!!.isPlaying) {
+                CommonData.musicServiceOld!!.mediaPlayer?.pause()
+            }
+        }
+        stopService(CommonData.a)
+
         interStitialAds.showInterstitalAd(activity)
-        super.onBackPressed()
+        super.onDestroy()
     }
 
     @SuppressLint("MissingInflatedId", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySecondBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        CommonData.binding = ActivitySecondBinding.inflate(layoutInflater)
+        setContentView(CommonData.binding.root)
 
         song = findViewById(R.id.songname)
         imageView = findViewById(R.id.profile_image)
         button = findViewById(R.id.button)
-        seekBar=findViewById(R.id.volumeSeekbar)
+        VolumControllerSeekBar=findViewById(R.id.volumeSeekbar)
         activity = this
         MobileAds.initialize(this) {}
         // Find the native and banner ad view container in the layout
         nativeAdContainer = findViewById(R.id.native_ad_container)
         bannerAdFrameLayout = findViewById(R.id.banner_ad_container)
         nativeandBanner.loadNativeOrBannerAds(nativeAdContainer,bannerAdFrameLayout,this)
-
-
         interStitialAds.loadInterStitialAds(this)
 
 
 
-        currentBeatName = intent.getStringExtra("beatName").toString()
-        CommonData.beatCurrent = currentBeatName;
-        song.setText(currentBeatName)
+        CommonData.a = Intent(this, MusicServiceOld::class.java)
+        bindService(CommonData.a, this, BIND_AUTO_CREATE)
+
+
+        CommonData.currentBeatName = intent.getStringExtra("beatName").toString()
+        CommonData.beatCurrent = CommonData.currentBeatName;
+        song.setText(CommonData.currentBeatName)
         song.setSelected(true)
 
 
 
-        currentImage = intent.getIntExtra("imageName", 0)
-        imageView.setImageResource(currentImage)
+        CommonData.currentImage = intent.getIntExtra("imageName", 0)
+        imageView.setImageResource(CommonData.currentImage)
 
 
-        currentAudio = intent.getIntExtra("currentAudio", 0)
-        position = intent.getIntExtra("position", 0)
+        CommonData.currentAudio = intent.getIntExtra("currentAudio", 0)
+        CommonData.position = intent.getIntExtra("position", 0)
 
 
         // Get the audio manager
@@ -94,14 +94,14 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
 
         // Set the maximum volume of the SeekBar to the maximum volume of the MediaPlayer:
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        seekBar.max = maxVolume
+        VolumControllerSeekBar.max = maxVolume
 
         // Set the current volume of the SeekBar to the current volume of the MediaPlayer:
         val currVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        seekBar.progress = currVolume
+        VolumControllerSeekBar.progress = currVolume
 
         // Add a SeekBar.OnSeekBarChangeListener to the SeekBar:
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        VolumControllerSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, i, 0)
             }
@@ -116,50 +116,47 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
         })
 
 
-
-
-
-
-        var isServiceCreated : Boolean= false
-        val a = Intent(this, MusicService::class.java)
-        bindService(a, this, BIND_AUTO_CREATE)
-
-        binding.button.setOnClickListener {
+        CommonData.binding.button.setOnClickListener {
             if (isServiceCreated==false){
-
-                startService(a)
+                isServiceCreated = true;
+                startService(CommonData.a)
             }
-
-            if (musicService!!.mediaPlayer == null) {
+            if (CommonData.musicServiceOld!!.mediaPlayer == null) {
                 Log.d("MusicActivity", "1st")
-                musicService!!.mediaPlayer = MediaPlayer.create(this, currentAudio)
-                musicService!!.mediaPlayer?.start()
+//                Toast.makeText(activity,"1st method",Toast.LENGTH_LONG).show()
+
+                CommonData. musicServiceOld!!.mediaPlayer = MediaPlayer.create(this, CommonData.currentAudio)
+                CommonData.musicServiceOld!!.mediaPlayer?.start()
+                CommonData.musicServiceOld!!.mediaPlayer?.isLooping=true
+
                 button.setImageResource(R.drawable.pause)
-                musicService!!.showNotification(R.drawable.pause)
-            } else if (musicService!!.mediaPlayer!!.isPlaying) {
+                CommonData.musicServiceOld!!.showNotification(R.drawable.pause)
+            } else if (CommonData.musicServiceOld!!.mediaPlayer!!.isPlaying) {
                 Log.d("MusicActivity", "2nd")
+//                Toast.makeText(activity,"2nd method",Toast.LENGTH_LONG).show()
 
                 button.setImageResource(R.drawable.play)
-                musicService!!.mediaPlayer?.pause()
-                musicService!!.showNotification(R.drawable.play)
-            } else if (musicService!!.mediaPlayer?.isPlaying == false) {
+                CommonData.musicServiceOld!!.mediaPlayer?.pause()
+                CommonData.musicServiceOld!!.showNotification(R.drawable.play)
+            } else if (CommonData.musicServiceOld!!.mediaPlayer?.isPlaying == false) {
                 Log.d("MusicActivity", "3rd")
+//                Toast.makeText(activity,"3rd method",Toast.LENGTH_LONG).show()
+
                 button.setImageResource(R.drawable.pause)
-                musicService!!.mediaPlayer?.start()
-                musicService!!.showNotification(R.drawable.pause)
+                CommonData.musicServiceOld!!.mediaPlayer?.start()
+                CommonData.musicServiceOld!!.showNotification(R.drawable.pause)
             }
         }
     }
 
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val binder = service as MusicService.MyBinder
-        musicService = binder.currentService()
-        musicService!!.showNotification(R.drawable.play)
+        val binder = service as MusicServiceOld.MyBinder
+        CommonData.musicServiceOld = binder.currentService()
+        CommonData.musicServiceOld!!.showNotification(R.drawable.play)
 //        musicService!!.mediaPlayer=MediaPlayer.create(this, audioCurrent)
     }
-
     override fun onServiceDisconnected(name: ComponentName?) {
-        musicService = null
+        CommonData.musicServiceOld = null
     }
 }

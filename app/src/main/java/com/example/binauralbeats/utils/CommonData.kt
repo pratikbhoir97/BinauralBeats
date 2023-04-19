@@ -1,6 +1,10 @@
 package com.example.binauralbeats.utils
 
+import android.content.Intent
+import com.example.binauralbeats.MusicServiceOld
 import com.example.binauralbeats.R
+import com.example.binauralbeats.databinding.ActivitySecondBinding
+import kotlin.properties.Delegates
 
 class CommonData {
 
@@ -36,5 +40,24 @@ class CommonData {
         )
 
         var beatCurrent:String = ""
+
+
+        //Music class data
+        var isPlaying: Boolean = false
+
+        lateinit var beatList: ArrayList<String>
+        lateinit var beatImage: ArrayList<Int>
+        lateinit var binding: ActivitySecondBinding
+
+
+        lateinit var audioList: ArrayList<Int>
+        var position by Delegates.notNull<Int>()
+        lateinit var currentBeatName: String
+        var currentImage by Delegates.notNull<Int>()
+        var currentAudio by Delegates.notNull<Int>()
+
+        var musicServiceOld: MusicServiceOld? = null
+        lateinit var a : Intent
     }
+
 }

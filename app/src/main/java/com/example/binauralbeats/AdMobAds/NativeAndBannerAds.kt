@@ -116,7 +116,14 @@ class NativeAndBannerAds {
                 }
             })
             .build()
-        adLoader.loadAd(AdRequest.Builder().build())
+        val euconsent= EUconsent(activity)
+        euconsent.showEUConsentDialog(activity)  { adRequestConfig ->
+            val adRequest = AdRequest.Builder().apply {
+                adRequestConfig?.let { addNetworkExtrasBundle(AdMobAdapter::class.java, it) }
+            }.build()
+            adLoader.loadAd(adRequest)
+        }
+//        adLoader.loadAd(AdRequest.Builder().build())
     }
 
     private fun populateNativeAdView(nativeAd: NativeAd, adView: RelativeLayout) {
@@ -186,8 +193,15 @@ class NativeAndBannerAds {
                 val adRequest =  AdRequest.Builder().build()
 
                 // Start loading the ad in the background.
+//                adView.loadAd(adRequest)
 
-            //    adView.loadAd(adRequest)
+                val euconsent= EUconsent(activity)
+                euconsent.showEUConsentDialog(activity)  { adRequestConfig ->
+                    val adRequest = AdRequest.Builder().apply {
+                        adRequestConfig?.let { addNetworkExtrasBundle(AdMobAdapter::class.java, it) }
+                    }.build()
+                    adView.loadAd(adRequest)
+                }
                 adView.adListener = object: AdListener() {
                     override fun onAdClicked() {
                         // Code to be executed when the user clicks on an ad.

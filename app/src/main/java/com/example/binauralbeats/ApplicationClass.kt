@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.example.binauralbeats.utils.CommonData
 
 class ApplicationClass:Application() {
 
@@ -34,7 +35,8 @@ class ApplicationClass:Application() {
     }
 
     override fun onTerminate() {
+        stopService(CommonData.a)
         super.onTerminate()
-
     }
+
 }

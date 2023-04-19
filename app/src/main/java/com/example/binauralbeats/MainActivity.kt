@@ -53,15 +53,6 @@ activity=this
         recyclerView1.adapter = adapter
 
   //    getConsentStatus()
-        val euconsent= EUconsent(activity)
-        euconsent.showEUConsentDialog(activity)  { adRequestConfig ->
-            val adRequest = AdRequest.Builder().apply {
-                adRequestConfig?.let { addNetworkExtrasBundle(AdMobAdapter::class.java, it) }
-            }.build()
-            adView.loadAd(adRequest)
-        }
-
-
 
 
         MobileAds.initialize(this) {}
