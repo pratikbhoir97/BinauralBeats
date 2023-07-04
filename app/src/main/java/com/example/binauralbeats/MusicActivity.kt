@@ -126,6 +126,7 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
 //                Toast.makeText(activity,"1st method",Toast.LENGTH_LONG).show()
 
                 CommonData. musicServiceOld!!.mediaPlayer = MediaPlayer.create(this, CommonData.currentAudio)
+                CommonData.isPlaying = true
                 CommonData.musicServiceOld!!.mediaPlayer?.start()
                 CommonData.musicServiceOld!!.mediaPlayer?.isLooping=true
 
@@ -135,6 +136,7 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
                 Log.d("MusicActivity", "2nd")
 //                Toast.makeText(activity,"2nd method",Toast.LENGTH_LONG).show()
 
+                CommonData.isPlaying = false
                 button.setImageResource(R.drawable.play)
                 CommonData.musicServiceOld!!.mediaPlayer?.pause()
                 CommonData.musicServiceOld!!.showNotification(R.drawable.play)
@@ -142,6 +144,7 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
                 Log.d("MusicActivity", "3rd")
 //                Toast.makeText(activity,"3rd method",Toast.LENGTH_LONG).show()
 
+                CommonData.isPlaying = true
                 button.setImageResource(R.drawable.pause)
                 CommonData.musicServiceOld!!.mediaPlayer?.start()
                 CommonData.musicServiceOld!!.showNotification(R.drawable.pause)
@@ -153,7 +156,7 @@ class MusicActivity : AppCompatActivity(), ServiceConnection {
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder = service as MusicServiceOld.MyBinder
         CommonData.musicServiceOld = binder.currentService()
-        CommonData.musicServiceOld!!.showNotification(R.drawable.play)
+//        CommonData.musicServiceOld!!.showNotification(R.drawable.play)
 //        musicService!!.mediaPlayer=MediaPlayer.create(this, audioCurrent)
     }
     override fun onServiceDisconnected(name: ComponentName?) {

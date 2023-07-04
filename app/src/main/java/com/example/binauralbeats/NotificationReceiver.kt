@@ -3,6 +3,8 @@ package com.example.binauralbeats
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
+import android.util.Log
 import com.example.binauralbeats.utils.CommonData
 import kotlin.system.exitProcess
 
@@ -21,7 +23,12 @@ class NotificationReceiver : BroadcastReceiver() {
 
     private fun playMusic() {
         CommonData.isPlaying = true
-        CommonData.musicServiceOld!!.mediaPlayer!!.start()
+        if (CommonData.musicServiceOld!!.mediaPlayer == null) {
+            CommonData.musicServiceOld!!.mediaPlayer =
+                MediaPlayer.create(MyApplication.instance, CommonData.currentAudio)
+        }
+
+            CommonData.musicServiceOld!!.mediaPlayer!!.start()
         CommonData.musicServiceOld!!.showNotification(R.drawable.pause)
         CommonData.binding.button.setImageResource(R.drawable.pause)
     }

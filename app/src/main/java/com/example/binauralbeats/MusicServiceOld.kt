@@ -42,17 +42,18 @@ class MusicServiceOld:Service() {
 
     fun startFGServiceNotification(){
         val notificationIntent = Intent(this, MusicActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0, notificationIntent, 0
-        )
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(this,0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+        }else{
+            PendingIntent.getActivity(this,0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Foreground Service Kotlin Example")
 //            .setContentText(input)
             .setSmallIcon(R.drawable.pause)
             .setContentIntent(pendingIntent)
             .build()
-
         startForeground(1, notification)
     }
 
@@ -75,8 +76,7 @@ class MusicServiceOld:Service() {
       } else {
           PendingIntent.getBroadcast(this, 0, exitIntent, PendingIntent.FLAG_UPDATE_CURRENT)
       }
-
-
+      
       val notification=NotificationCompat.Builder(baseContext,ApplicationClass.CHANNEL_ID)
           .setContentTitle(CommonData.beatCurrent)
         //  .setContentText(CommonData.beatCurrent)
@@ -89,15 +89,8 @@ class MusicServiceOld:Service() {
           .setAutoCancel(true)
           .setOngoing(true)
           .addAction(pauseBtn,"play",playPendingIntent)
-         .addAction(R.drawable.baseline_exit_to_app_24,"exit",exitPendingIntent)
+//         .addAction(R.drawable.baseline_exit_to_app_24,"exit",exitPendingIntent)
           .build()
-
         startForeground(13,notification)
   }
     }
-
-
-
-
-
-

@@ -2,6 +2,7 @@ package com.example.binauralbeats
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,8 @@ companion object{
     var nativeAdId :String= "ca-app-pub-3940256099942544/224769110"
     var interstitailAdId : String="ca-app-pub-3940256099942544/1033173712"
     var exitInterstitailAdId :String= "ca-app-pub-3940256099942544/1033173712"
+    lateinit var appContext : Context
+    lateinit var instance : MyApplication
 
 }
     override fun onCreate() {
@@ -38,6 +41,9 @@ companion object{
 
         }
         super.onCreate()
+
+        appContext = applicationContext
+         instance = this
     }
 
 
