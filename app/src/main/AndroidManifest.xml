@@ -21,30 +21,26 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashScreenBackground">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="true"
+            android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".MusicActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
             android:theme="@style/MusicActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".MusicServiceOld" />

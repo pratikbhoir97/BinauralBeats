@@ -8,6 +8,14 @@
     android:orientation="vertical"
     tools:context=".MusicActivity">
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="270dp">
+          android:paddingLeft="230dp"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,13 +41,14 @@
                 android:paddingEnd="5dp"
                 android:text="No Timer"
                 android:textColor="@color/white"
-                android:textFontWeight="500"
-                android:textSize="16dp" />
+                android:textFontWeight="400"
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/timer" />
+                android:src="@drawable/timer"
+                android:paddingEnd="15dp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -46,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -89,7 +99,7 @@
             android:id="@+id/profile_image"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="30dp"
             android:padding="16dp"
             android:src="@drawable/study"
             app:civ_border_color="@color/white"
@@ -113,8 +123,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="165dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="6dp"
                 android:text="volume"
                 android:textColor="@color/white"
                 android:textSize="24dp"
@@ -125,7 +135,8 @@
             android:id="@+id/button"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/shape"
             android:padding="5dp"
             android:scaleType="fitCenter"
@@ -150,11 +161,14 @@
         <!--        </androidx.cardview.widget.CardView>-->
     </LinearLayout>
 
+    </LinearLayout>
+</ScrollView>
     <LinearLayout
         android:id="@+id/native_banner_ad_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+
         android:orientation="vertical">
 
         <FrameLayout
@@ -173,5 +187,4 @@
             />
     </LinearLayout>
 
-
-</RelativeLayout>
+    </RelativeLayout>
